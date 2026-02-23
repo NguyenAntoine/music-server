@@ -21,6 +21,25 @@ services:
       - default
       - reverse-proxy
 
+  filebrowser:
+    image: filebrowser/filebrowser:v2
+    container_name: music_filebrowser
+    restart: always
+    volumes:
+      - ${MUSIC_FOLDER}:/srv
+      - ./filebrowser/database.db:/database
+      - ./filebrowser/config:/config
+    expose:
+      - 80
+    networks:
+      - default
+      - reverse-proxy
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST_FILEBROWSER}
+      - LETSENCRYPT_HOST=${VIRTUAL_HOST_FILEBROWSER}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - VIRTUAL_PORT=80
+
 networks:
   reverse-proxy:
     external: true
